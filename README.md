@@ -56,7 +56,7 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
 
 ## RabbitMQ Consumer Pattern
 
-For the Order Analytics Service, we will implement the Work Queue pattern using push-based consumption
+
 ┌─────────────────┐     ┌─────────────────────────────────────┐
 │   order-service │     │      RabbitMQ Broker                 │
 │   (Producer)    │────▶│  ┌────────────────┐                 │
