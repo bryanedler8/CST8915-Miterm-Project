@@ -57,7 +57,6 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
 ## RabbitMQ Consumer Pattern
 
 For the Order Analytics Service, we will implement the Work Queue pattern using push-based consumption
-```
 ┌─────────────────┐     ┌─────────────────────────────────────┐
 │   order-service │     │      RabbitMQ Broker                 │
 │   (Producer)    │────▶│  ┌────────────────┐                 │
@@ -79,7 +78,7 @@ For the Order Analytics Service, we will implement the Work Queue pattern using 
                         │ service (Consumer)  │
                         └─────────────────────┘
 
-```
+
  Why prefetch matters: Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
  leading to memory issues. Prefetch creates a "window" of in-flight message
 
