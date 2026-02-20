@@ -55,7 +55,7 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
 
 
 ## RabbitMQ Consumer Pattern
-
+```text
 
 ┌─────────────────┐     ┌─────────────────────────────────────┐
 │   order-service │     │      RabbitMQ Broker                 │
@@ -77,6 +77,8 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
                         │ order-analytics     │
                         │ service (Consumer)  │
                         └─────────────────────┘
+```
+
 
 
  Why prefetch matters: Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
