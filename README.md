@@ -79,38 +79,6 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
                         └─────────────────────┘
 ```
 
-# A walkthrough of your architecture diagram
-
- # 🏗️ Architecture Diagram Walkthrough
-
-Let me explain this architecture diagram step by step, showing how data flows through your Algonquin Pet Store system.
-
-## 📊 The Complete Data Flow
-
-```
-┌─────────────────┐     ┌─────────────────────────────────────┐
-│   order-service │     │          RabbitMQ Broker            │
-│   (Producer)    │────▶│  ┌────────────────┐                │
-└─────────────────┘     │  │  order_queue   │                │
-                        │  └────────────────┘                │
-                        │          │                          │
-                        │          │ Push delivery            │
-                        │          ▼                          │
-                        │  ┌────────────────┐                │
-                        │  │ Consumer (Push)│                │
-                        │  │ with prefetch  │                │
-                        │  └────────────────┘                │
-                        │          │                          │
-                        └──────────┼──────────────────────────┘
-                                   │
-                                   ▼
-                        ┌─────────────────────┐
-                        │ order-analytics     │
-                        │ service (Consumer)  │
-                        └─────────────────────┘
-```
-
-
 
  
   ## **Step 1:** 
