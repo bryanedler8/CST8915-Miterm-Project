@@ -79,18 +79,93 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
                         └─────────────────────┘
 ```
 
+# A walkthrough of your architecture diagram
+
+ # 🏗️ Architecture Diagram Walkthrough
+
+Let me explain this architecture diagram step by step, showing how data flows through your Algonquin Pet Store system.
+
+## 📊 The Complete Data Flow
+
+```
+┌─────────────────┐     ┌─────────────────────────────────────┐
+│   order-service │     │          RabbitMQ Broker            │
+│   (Producer)    │────▶│  ┌────────────────┐                │
+└─────────────────┘     │  │  order_queue   │                │
+                        │  └────────────────┘                │
+                        │          │                          │
+                        │          │ Push delivery            │
+                        │          ▼                          │
+                        │  ┌────────────────┐                │
+                        │  │ Consumer (Push)│                │
+                        │  │ with prefetch  │                │
+                        │  └────────────────┘                │
+                        │          │                          │
+                        └──────────┼──────────────────────────┘
+                                   │
+                                   ▼
+                        ┌─────────────────────┐
+                        │ order-analytics     │
+                        │ service (Consumer)  │
+                        └─────────────────────┘
+```
 
 
- Why prefetch matters: Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
- leading to memory issues. Prefetch creates a "window" of in-flight message
 
-## Justification for Push Pattern Selection with prefetch
  
-# Alignment with RabbitMQ's Design Philosophy
+  ## **Step 1:** 
+    Orders are published to RabbitMQ as JSON objects (asynchronous)     
+  ## **Step 2:** 
+    Orders persist in the queue until acknowledged     
+  ## **Step 3:**   
+    RabbitMQ immediately pushes messages as they arrive
+    Prefetch limit controls flow
+    No polling - efficient and real-time   
+  ## **Step 4: order-analytics-service **    
+  1. Consumes messages pushed from RabbitMQ
+  2. Processes each order
+  3. Updates in-memory analytics
+  4. Acknowledges successful processing
+  5. Exposes analytics via REST API
+
+
+
+# Justification for Push Pattern Selection with prefetch
+
+## Why prefetch matters:   
+
+ Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
+ leading to memory issues. Prefetch creates a "window" of in-flight message   
+ 
+## Alignment with RabbitMQ's Design Philosophy
 RabbitMQ is fundamentally designed as a push-based broker . The AMQP protocol, which RabbitMQ implements, specifies that the broker is responsible for "pushing" messages to consumers. Using push mode leverages RabbitMQ's core strengths.
 
 ## Real-time Analytics Requirement
 The Order Analytics Service needs to provide up-to-date analytics. Push mode ensures orders are processed milliseconds after being placed, enabling real-time dashboard updates .
 
-                        
+## Simplified Consumer Logic  
+// Push mode - clean, declarative
+channel.consume(queue, handleMessage);
 
+// Pull mode - messy, imperative (NOT RECOMMENDED)
+while (true) {
+    GetResponse response = channel.basicGet(queue, false);
+    if (response != null) {
+        // process
+        channel.basicAck(...);
+    } else {
+        Thread.sleep(100); // wasteful polling
+    }
+}
+
+## Built-in Flow Control    
+Push mode with prefetch provides automatic backpressure:
+
+Consumer sets prefetch limit (e.g., 10 messages)
+
+RabbitMQ stops pushing when limit reached
+
+Consumer resumes receiving as it acknowledges messages 
+
+## Official RabbitMQ Guidance
+The RabbitMQ documentation explicitly warns against polling: "As any polling-based approach in distributed systems, it is highly inefficient, in particular in cases where queues can be empty for periods of time" .
