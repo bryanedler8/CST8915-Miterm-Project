@@ -102,7 +102,7 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
 
 ## Why prefetch matters:   
 
- Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
+ Without prefetch, RabbitMQ could overwhelm the consumer by pushing thousands of messages, 
  leading to memory issues. Prefetch creates a "window" of in-flight message   
  
 ## Alignment with RabbitMQ's Design Philosophy
