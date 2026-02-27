@@ -32,7 +32,7 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
 | **order-service** | Node.js/Express | App Service | 3000 | Processes orders, publishes to RabbitMQ | ✅ Deployed |
 | **product-service** | Python/Flask | App Service | 3030 | Serves product catalog via REST API | ✅ Deployed |
 | **RabbitMQ** | Erlang/RabbitMQ | Azure VM (Ubuntu) | 5672,15672 | Message broker for async communication | ✅ Deployed |
-| **order-analytics-service** | Node.js/Express | App Service | 4000 | Consumes orders, provides analytics API | 🆕 New |
+| **order-analytics-service** | Python/Flask | App Service | 4000 | Consumes orders, provides analytics API | 🆕 New |
 
 ## 📋 Prerequisites
 
