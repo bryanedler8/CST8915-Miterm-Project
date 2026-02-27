@@ -84,9 +84,9 @@ The Algonquin Pet Store is a full-stack microservices application that demonstra
  Why prefetch matters: Without prefetch, RabbitMQ could overwhelm your consumer by pushing thousands of messages, 
  leading to memory issues. Prefetch creates a "window" of in-flight message
 
- Justification for Push Pattern Selection
+## Justification for Push Pattern Selection with prefetch
  
-## Alignment with RabbitMQ's Design Philosophy
+# Alignment with RabbitMQ's Design Philosophy
 RabbitMQ is fundamentally designed as a push-based broker . The AMQP protocol, which RabbitMQ implements, specifies that the broker is responsible for "pushing" messages to consumers. Using push mode leverages RabbitMQ's core strengths.
 
 ## Real-time Analytics Requirement
