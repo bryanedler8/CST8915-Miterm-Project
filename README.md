@@ -112,19 +112,7 @@ RabbitMQ is fundamentally designed as a push-based broker . The AMQP protocol, w
 The Order Analytics Service needs to provide up-to-date analytics. Push mode ensures orders are processed milliseconds after being placed, enabling real-time dashboard updates .
 
 ## Simplified Consumer Logic  
-// Push mode - clean, declarative
-channel.consume(queue, handleMessage);
 
-// Pull mode - messy, imperative (NOT RECOMMENDED)
-while (true) {
-    GetResponse response = channel.basicGet(queue, false);
-    if (response != null) {
-        // process
-        channel.basicAck(...);
-    } else {
-        Thread.sleep(100); // wasteful polling
-    }
-}
 
 ## Built-in Flow Control    
 Push mode with prefetch provides automatic backpressure:
